@@ -6,4 +6,10 @@ import java.util.Optional;
 
 public interface UsuarioRepositoryPort {
     Optional<Usuario> buscarPorId(Long id);
+
+    Usuario guardar(Usuario usuario);
+
+    boolean existePorDocumento(String documento);
+
+    boolean existePorCorreo(String correo);
 }
