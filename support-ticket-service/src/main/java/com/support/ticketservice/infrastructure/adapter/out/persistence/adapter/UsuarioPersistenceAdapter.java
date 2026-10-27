@@ -1,9 +1,9 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.adapter;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.adapter;
 
 import com.support.ticketservice.application.port.out.UsuarioRepositoryPort;
 import com.support.ticketservice.domain.model.Usuario;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.mapper.UsuarioPersistenceMapper;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.repository.UsuarioJpaRepository;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.mapper.UsuarioPersistenceMapper;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.UsuarioJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

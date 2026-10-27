@@ -1,9 +1,9 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.repository;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.repository;
 
 import com.support.ticketservice.domain.model.enums.Categoria;
 import com.support.ticketservice.domain.model.enums.EstadoRegistro;
 import com.support.ticketservice.domain.model.enums.EstadoTicket;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.TecnicoEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.TecnicoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

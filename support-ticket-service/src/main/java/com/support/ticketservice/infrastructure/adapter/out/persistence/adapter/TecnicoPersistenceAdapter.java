@@ -1,12 +1,12 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.adapter;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.adapter;
 
 import com.support.ticketservice.application.port.out.TecnicoRepositoryPort;
 import com.support.ticketservice.domain.model.TecnicoConCarga;
 import com.support.ticketservice.domain.model.enums.Categoria;
 import com.support.ticketservice.domain.model.enums.EstadoRegistro;
 import com.support.ticketservice.domain.model.enums.EstadoTicket;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.mapper.TecnicoPersistenceMapper;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.repository.TecnicoJpaRepository;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.mapper.TecnicoPersistenceMapper;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.TecnicoJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

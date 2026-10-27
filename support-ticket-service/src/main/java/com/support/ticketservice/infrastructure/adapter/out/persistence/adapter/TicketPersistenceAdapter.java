@@ -1,13 +1,13 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.adapter;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.adapter;
 
 import com.support.ticketservice.application.port.out.TicketRepositoryPort;
 import com.support.ticketservice.domain.exception.RecursoNoEncontradoException;
 import com.support.ticketservice.domain.model.Ticket;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.TicketEntity;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.mapper.TicketPersistenceMapper;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.repository.TecnicoJpaRepository;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.repository.TicketJpaRepository;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.repository.UsuarioJpaRepository;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.TicketEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.mapper.TicketPersistenceMapper;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.TecnicoJpaRepository;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.TicketJpaRepository;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.UsuarioJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

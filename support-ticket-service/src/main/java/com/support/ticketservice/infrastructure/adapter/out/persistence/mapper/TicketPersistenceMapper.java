@@ -1,7 +1,7 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.mapper;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.mapper;
 
 import com.support.ticketservice.domain.model.Ticket;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.TicketEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.TicketEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

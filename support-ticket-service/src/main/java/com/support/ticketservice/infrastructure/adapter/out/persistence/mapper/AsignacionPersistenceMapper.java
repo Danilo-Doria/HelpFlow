@@ -1,7 +1,7 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.mapper;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.mapper;
 
 import com.support.ticketservice.domain.model.Asignacion;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.AsignacionEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.AsignacionEntity;
 import org.mapstruct.Mapper;
 
 @Mapper

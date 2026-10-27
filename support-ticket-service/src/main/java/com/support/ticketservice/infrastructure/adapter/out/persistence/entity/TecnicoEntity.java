@@ -1,4 +1,4 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.entity;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.entity;
 
 import com.support.ticketservice.domain.model.enums.Categoria;
 import com.support.ticketservice.domain.model.enums.EstadoRegistro;

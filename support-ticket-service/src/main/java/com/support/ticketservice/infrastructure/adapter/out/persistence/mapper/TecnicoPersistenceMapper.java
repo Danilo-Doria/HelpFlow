@@ -1,7 +1,7 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.mapper;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.mapper;
 
 import com.support.ticketservice.domain.model.Tecnico;
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.TecnicoEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.TecnicoEntity;
 import org.mapstruct.Mapper;
 
 @Mapper

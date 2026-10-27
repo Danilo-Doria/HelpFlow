@@ -1,6 +1,6 @@
-package com.support.ticketservice.infrastructure.adapter.out.persistance.repository;
+package com.support.ticketservice.infrastructure.adapter.out.persistence.repository;
 
-import com.support.ticketservice.infrastructure.adapter.out.persistance.entity.TicketEntity;
+import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.TicketEntity;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
