@@ -1,4 +1,4 @@
-package com.support.ticketservice.infrastructure.adapter.in.rest;
+package com.support.ticketservice.infrastructure.adapter.in.rest.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

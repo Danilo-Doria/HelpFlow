@@ -101,14 +101,18 @@ public class Ticket {
     }
 
     public boolean estaVencido(Instant ahora) {
-        return !estado.esTerminal() && estado != EstadoTicket.RESUELTO
-                && ahora.isAfter(fechaLimiteSla);
+        return estado.cuentaParaSla() && ahora.isAfter(fechaLimiteSla);
     }
 
     public boolean proximoAVencer(Instant ahora, Duration umbral) {
-        return !estado.esTerminal() && estado != EstadoTicket.RESUELTO
-                && !estaVencido(ahora)
+        return estado.cuentaParaSla() && !estaVencido(ahora)
                 && Duration.between(ahora, fechaLimiteSla).compareTo(umbral) <= 0;
+    }
+
+    /** Vence dentro del umbral (o ya venció) y todavía no fue escalado. */
+    public boolean necesitaEscalado(Instant ahora, Duration umbral) {
+        return !escalado && estado.cuentaParaSla()
+                && !ahora.plus(umbral).isBefore(fechaLimiteSla);
     }
 
     // Sube el nivel de prioridad. Solo se escala una vez (secuencial).

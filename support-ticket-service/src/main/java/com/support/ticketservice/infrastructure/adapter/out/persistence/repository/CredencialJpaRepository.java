@@ -9,4 +9,8 @@ public interface CredencialJpaRepository extends JpaRepository<CredencialEntity,
     Optional<CredencialEntity> findByUsername(String username);
 
     boolean existsByUsername(String username);
+
+    Optional<CredencialEntity> findByUsuarioId(Long usuarioId);
+
+    Optional<CredencialEntity> findByTecnicoId(Long tecnicoId);
 }

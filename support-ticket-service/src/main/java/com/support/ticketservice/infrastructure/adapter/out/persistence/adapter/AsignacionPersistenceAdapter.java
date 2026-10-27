@@ -18,4 +18,9 @@ public class AsignacionPersistenceAdapter implements AsignacionRepositoryPort {
     public Asignacion guardar(Asignacion asignacion) {
         return mapper.toDomain(jpa.save(mapper.toEntity(asignacion)));
     }
+
+    @Override
+    public void desactivarActivas(Long ticketId) {
+        jpa.desactivarActivas(ticketId);
+    }
 }

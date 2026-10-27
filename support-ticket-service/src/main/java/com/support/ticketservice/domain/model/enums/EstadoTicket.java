@@ -27,4 +27,6 @@ public enum EstadoTicket {
     public boolean esTerminal() {
         return this == CERRADO || this == CANCELADO;
     }
+
+    public boolean cuentaParaSla() {return this == ABIERTO || this == ASIGNADO || this == EN_PROGRESO; }
 }

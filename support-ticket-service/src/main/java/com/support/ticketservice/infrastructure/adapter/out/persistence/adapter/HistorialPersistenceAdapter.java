@@ -9,6 +9,8 @@ import com.support.ticketservice.infrastructure.adapter.out.persistence.reposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class HistorialPersistenceAdapter implements HistorialRepositoryPort {
@@ -22,5 +24,10 @@ public class HistorialPersistenceAdapter implements HistorialRepositoryPort {
         HistorialTicketEntity entity = mapper.toEntity(historial);
         entity.setTicket(ticketJpa.getReferenceById(historial.ticketId()));
         return mapper.toDomain(jpa.save(entity));
+    }
+
+    @Override
+    public List<HistorialTicket> listarPorTicket(Long ticketId) {
+        return jpa.findByTicketIdOrderByFechaAsc(ticketId).stream().map(mapper::toDomain).toList();
     }
 }
