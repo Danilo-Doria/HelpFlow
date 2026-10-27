@@ -30,4 +30,14 @@ public class CredencialPersistenceAdapter implements CredencialRepositoryPort {
     public boolean existePorUsername(String username) {
         return jpa.existsByUsername(username);
     }
+
+    @Override
+    public void actualizarActivoPorUsuarioId(Long usuarioId, boolean activo) {
+        jpa.findByUsuarioId(usuarioId).ifPresent(c -> c.setActivo(activo));
+    }
+
+    @Override
+    public void actualizarActivoPorTecnicoId(Long tecnicoId, boolean activo) {
+        jpa.findByTecnicoId(tecnicoId).ifPresent(c -> c.setActivo(activo));
+    }
 }

@@ -7,4 +7,5 @@ public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long>
     boolean existsByDocumento(String documento);
 
     boolean existsByCorreoIgnoreCase(String correo);
+
 }

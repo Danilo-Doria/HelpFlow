@@ -11,6 +11,7 @@ import com.support.ticketservice.infrastructure.adapter.out.persistence.reposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -41,5 +42,20 @@ public class TicketPersistenceAdapter implements TicketRepositoryPort {
     @Override
     public Optional<Ticket> buscarPorId(Long id) {
         return jpa.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Ticket> listarTodos() {
+        return jpa.findAllByOrderByFechaCreacionDesc().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Ticket> listarPorSolicitante(Long usuarioId) {
+        return jpa.findByUsuarioIdOrderByFechaCreacionDesc(usuarioId).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Ticket> listarPorTecnico(Long tecnicoId) {
+        return jpa.findByTecnicoIdOrderByFechaCreacionDesc(tecnicoId).stream().map(mapper::toDomain).toList();
     }
 }

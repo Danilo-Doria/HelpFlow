@@ -1,6 +1,7 @@
 package com.support.ticketservice.infrastructure.adapter.out.persistence.adapter;
 
 import com.support.ticketservice.application.port.out.TecnicoRepositoryPort;
+import com.support.ticketservice.domain.model.Tecnico;
 import com.support.ticketservice.domain.model.TecnicoConCarga;
 import com.support.ticketservice.domain.model.enums.Categoria;
 import com.support.ticketservice.domain.model.enums.EstadoRegistro;
@@ -8,10 +9,12 @@ import com.support.ticketservice.domain.model.enums.EstadoTicket;
 import com.support.ticketservice.infrastructure.adapter.out.persistence.mapper.TecnicoPersistenceMapper;
 import com.support.ticketservice.infrastructure.adapter.out.persistence.repository.TecnicoJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,5 +31,25 @@ public class TecnicoPersistenceAdapter implements TecnicoRepositoryPort {
         return jpa.buscarCandidatos(categoria, EstadoRegistro.ACTIVO, ESTADOS_ACTIVOS).stream()
                 .map(r -> new TecnicoConCarga(mapper.toDomain(r.tecnico()), r.carga()))
                 .toList();
+    }
+
+    @Override
+    public Tecnico guardar(Tecnico tecnico) {
+        return mapper.toDomain(jpa.save(mapper.toEntity(tecnico)));
+    }
+
+    @Override
+    public Optional<Tecnico> buscarPorId(Long id) {
+        return jpa.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Tecnico> listarTodos() {
+        return jpa.findAll(Sort.by("id")).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public boolean existePorDocumento(String documento) {
+        return jpa.existsByDocumento(documento);
     }
 }

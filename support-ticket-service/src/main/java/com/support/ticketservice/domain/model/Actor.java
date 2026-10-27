@@ -1,9 +1,8 @@
-package com.support.ticketservice.infrastructure.security;
+package com.support.ticketservice.domain.model;
 
 import com.support.ticketservice.domain.model.enums.Rol;
 
-public record AuthPrincipal(String username, Rol rol, Long usuarioId, Long tecnicoId) {
-
+public record Actor(String username, Rol rol, Long usuarioId, Long tecnicoId) {
     public boolean esAdmin() {
         return rol == Rol.ROLE_ADMIN;
     }

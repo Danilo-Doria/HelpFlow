@@ -10,4 +10,8 @@ public interface CredencialRepositoryPort {
     Optional<Credencial> buscarPorUsername(String username);
 
     boolean existePorUsername(String username);
+
+    void actualizarActivoPorUsuarioId(Long usuarioId, boolean activo);
+
+    void actualizarActivoPorTecnicoId(Long tecnicoId, boolean activo);
 }

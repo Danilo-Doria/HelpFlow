@@ -24,4 +24,6 @@ public interface TecnicoJpaRepository extends JpaRepository<TecnicoEntity, Long>
     List<TecnicoCargaRow> buscarCandidatos(@Param("categoria") Categoria categoria,
                                            @Param("estado") EstadoRegistro estado,
                                            @Param("estadosActivos") Collection<EstadoTicket> estadosActivos);
+
+    boolean existsByDocumento(String documento);
 }

@@ -1,6 +1,7 @@
 package com.support.ticketservice.infrastructure.security;
 
 import com.support.ticketservice.application.port.out.TokenGeneratorPort;
+import com.support.ticketservice.domain.model.Actor;
 import com.support.ticketservice.domain.model.Credencial;
 import com.support.ticketservice.domain.model.enums.Rol;
 import io.jsonwebtoken.Claims;
@@ -44,11 +45,11 @@ public class JwtService implements TokenGeneratorPort {
     }
 
     /** Devuelve vacío si el token es inválido, está manipulado o expiró. */
-    public Optional<AuthPrincipal> validar(String token) {
+    public Optional<Actor> validar(String token) {
         try {
             Claims claims = Jwts.parser().verifyWith(key).build()
                     .parseSignedClaims(token).getPayload();
-            return Optional.of(new AuthPrincipal(
+            return Optional.of(new Actor(
                     claims.getSubject(),
                     Rol.valueOf(claims.get("rol", String.class)),
                     claims.get("uid", Long.class),
