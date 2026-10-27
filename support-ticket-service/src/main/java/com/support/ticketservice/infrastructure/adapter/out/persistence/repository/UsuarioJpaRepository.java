@@ -4,4 +4,7 @@ import com.support.ticketservice.infrastructure.adapter.out.persistence.entity.U
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long> {
+    boolean existsByDocumento(String documento);
+
+    boolean existsByCorreoIgnoreCase(String correo);
 }
