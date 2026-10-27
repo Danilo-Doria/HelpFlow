@@ -1,6 +1,6 @@
 package com.support.ticketservice.infrastructure.adapter.out.persistence.entity;
 
-import com.support.ticketservice.infrastructure.security.Rol;
+import com.support.ticketservice.domain.model.enums.Rol;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
