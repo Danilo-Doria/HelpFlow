@@ -1,5 +1,8 @@
 package com.support.ticketservice.domain.model;
 
+import com.support.ticketservice.domain.model.enums.Categoria;
+import com.support.ticketservice.domain.model.enums.EstadoRegistro;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

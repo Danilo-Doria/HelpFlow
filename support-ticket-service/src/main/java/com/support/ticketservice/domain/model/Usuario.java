@@ -1,5 +1,7 @@
 package com.support.ticketservice.domain.model;
 
+import com.support.ticketservice.domain.model.enums.EstadoRegistro;
+
 public record Usuario(
         Long id, String documento, String nombre, String correo,
         String sede, String area, EstadoRegistro estado) {

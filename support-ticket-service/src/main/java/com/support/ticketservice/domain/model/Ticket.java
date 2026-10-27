@@ -3,6 +3,9 @@ package com.support.ticketservice.domain.model;
 import com.support.ticketservice.domain.exception.AsignacionInvalidaException;
 import com.support.ticketservice.domain.exception.TransicionInvalidaException;
 import com.support.ticketservice.domain.exception.UsuarioInactivoException;
+import com.support.ticketservice.domain.model.enums.Categoria;
+import com.support.ticketservice.domain.model.enums.EstadoTicket;
+import com.support.ticketservice.domain.model.enums.Prioridad;
 import com.support.ticketservice.domain.service.SlaPolicy;
 
 import java.time.Duration;

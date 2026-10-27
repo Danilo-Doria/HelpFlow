@@ -1,6 +1,6 @@
 package com.support.ticketservice.domain.service;
 
-import com.support.ticketservice.domain.model.Prioridad;
+import com.support.ticketservice.domain.model.enums.Prioridad;
 
 import java.time.Duration;
 import java.time.Instant;

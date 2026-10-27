@@ -1,5 +1,7 @@
 package com.support.ticketservice.domain.model;
 
+import com.support.ticketservice.domain.model.enums.EstadoTicket;
+
 import java.time.Instant;
 
 public record HistorialTicket(
