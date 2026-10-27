@@ -1,4 +1,4 @@
-package com.support.ticketservice.domain.model;
+package com.support.ticketservice.domain.model.enums;
 
 import java.util.EnumSet;
 import java.util.Map;
