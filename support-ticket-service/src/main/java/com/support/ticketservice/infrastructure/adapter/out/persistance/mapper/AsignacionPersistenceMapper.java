@@ -7,5 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface AsignacionPersistenceMapper {
     Asignacion toDomain(AsignacionEntity entity);
+
     AsignacionEntity toEntity(Asignacion asignacion);
 }
