@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: helpflow
       POSTGRES_PASSWORD: helpflow
     ports:
-      - "5432:5432"
+      - "5437:5432"
     volumes:
       - helpflow-data:/var/lib/postgresql/data
     healthcheck:
@@ -18,8 +18,8 @@ services:
 
   technician-dispatch-service:
     build:
-      context: .
-      dockerfile: technician-dispatch-service/Dockerfile
+      context: ./technician-dispatch-service
+      dockerfile: Dockerfile
     container_name: helpflow-dispatch
     ports:
       - "8081:8081"
@@ -32,8 +32,8 @@ services:
 
   support-ticket-service:
     build:
-      context: .
-      dockerfile: support-ticket-service/Dockerfile
+      context: ./support-ticket-service
+      dockerfile: Dockerfile
     container_name: helpflow-support
     depends_on:
       db:

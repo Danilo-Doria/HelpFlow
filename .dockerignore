@@ -1,8 +1,5 @@
-**/target
-**/.git
-**/.idea
-**/.vscode
-**/*.iml
-**/.mvn/wrapper/maven-wrapper.jar
+target
 .git
-*.md
+.idea
+.vscode
+*.iml
