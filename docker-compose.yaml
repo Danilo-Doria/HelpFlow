@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: helpflow
       POSTGRES_PASSWORD: helpflow
     ports:
-      - "5437:5432"
+      - "5432:5432"
     volumes:
       - helpflow-data:/var/lib/postgresql/data
     healthcheck:
@@ -15,6 +15,47 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  technician-dispatch-service:
+    build:
+      context: .
+      dockerfile: technician-dispatch-service/Dockerfile
+    container_name: helpflow-dispatch
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health | grep -q UP"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
+  support-ticket-service:
+    build:
+      context: .
+      dockerfile: support-ticket-service/Dockerfile
+    container_name: helpflow-support
+    depends_on:
+      db:
+        condition: service_healthy
+      technician-dispatch-service:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/helpflow
+      DB_USER: helpflow
+      DB_PASSWORD: helpflow
+      DISPATCH_URL: http://technician-dispatch-service:8081
+      JWT_SECRET: ${JWT_SECRET:-cambia-esta-clave-por-una-de-minimo-32-caracteres-seguros}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin12345*}
+      SPRING_PROFILES_ACTIVE: json
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 40s
 
 volumes:
   helpflow-data:
