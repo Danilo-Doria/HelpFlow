@@ -2,8 +2,10 @@ package com.support.ticketservice.infrastructure.adapter.in.rest;
 
 import com.support.ticketservice.domain.exception.*;
 import com.support.ticketservice.infrastructure.config.TraceIdFilter;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.logging.MDC;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,10 +24,12 @@ import java.time.Instant;
 import java.util.Map;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String BASE = "https://helpflow.com/problems/";
+    private final MeterRegistry meters;
 
     // ---------- Dominio ----------
     @ExceptionHandler(RecursoNoEncontradoException.class)
@@ -47,12 +51,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(OperacionNoPermitidaException.class)
     ProblemDetail noPermitida(OperacionNoPermitidaException ex, HttpServletRequest req) {
+        meters.counter("helpflow.access.denied", "tipo", "propiedad").increment();
         return problema(HttpStatus.FORBIDDEN, "operacion-no-permitida",
                 "Operación no permitida", ex.getMessage(), req);
     }
 
     @ExceptionHandler(CredencialesInvalidasException.class)
     ProblemDetail credenciales(CredencialesInvalidasException ex, HttpServletRequest req) {
+        meters.counter("helpflow.auth.failures", "tipo", "login").increment();
         return problema(HttpStatus.UNAUTHORIZED, "credenciales-invalidas",
                 "Credenciales inválidas", ex.getMessage(), req);
     }
@@ -66,12 +72,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // ---------- Seguridad ----------
     @ExceptionHandler(AccessDeniedException.class)
     ProblemDetail accesoDenegado(AccessDeniedException ex, HttpServletRequest req) {
+        meters.counter("helpflow.access.denied", "tipo", "rol").increment();
         return problema(HttpStatus.FORBIDDEN, "acceso-denegado", "Acceso denegado",
                 "No tienes permisos para realizar esta operación", req);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     ProblemDetail noAutenticado(AuthenticationException ex, HttpServletRequest req) {
+        meters.counter("helpflow.auth.failures", "tipo", "token").increment();
         return problema(HttpStatus.UNAUTHORIZED, "no-autenticado", "No autenticado",
                 "Token ausente, inválido o expirado", req);
     }

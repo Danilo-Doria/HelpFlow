@@ -30,6 +30,7 @@ public class CrearTicketService implements CrearTicketUseCase {
     private final TechnicianDispatchPort dispatch;
     private final TecnicoSelector selector;
     private final Clock clock;
+    private final TicketMetricsPort metrics;
 
     @Override
     @Transactional
@@ -72,6 +73,7 @@ public class CrearTicketService implements CrearTicketUseCase {
         String observacion = "Asignado a " + tecnico.nombre();
         Duration restante = Duration.between(ahora, ticket.getFechaLimiteSla());
         if (sug.tiempoEstimadoHoras() > restante.toHours() && ticket.escalar()) {
+            metrics.ticketEscalado(ticket.getPrioridad());
             observacion += ". Escalado: tiempo estimado (" + sug.tiempoEstimadoHoras()
                     + " h) supera el SLA restante";
         }
@@ -82,6 +84,10 @@ public class CrearTicketService implements CrearTicketUseCase {
                 ahora, true, actor));
         historial.guardar(new HistorialTicket(null, ticket.getId(), EstadoTicket.ABIERTO,
                 EstadoTicket.ASIGNADO, tecnico.id(), observacion, actor, ahora));
+
+        metrics.ticketCreado(ticket.getCategoria(), ticket.getPrioridad());
+        log.info("Ticket creado id={} categoria={} prioridad={} solicitante={}",
+                ticket.getId(), ticket.getCategoria(), ticket.getPrioridad(), actor);
 
         return ticket;
     }

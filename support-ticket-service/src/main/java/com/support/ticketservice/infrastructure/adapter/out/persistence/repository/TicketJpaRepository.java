@@ -38,4 +38,6 @@ public interface TicketJpaRepository extends JpaRepository<TicketEntity, Long> {
         """)
     List<Long> buscarIdsEscalables(@Param("estados") Collection<EstadoTicket> estados,
                                    @Param("limite") Instant limite);
+
+    long countByEstadoInAndFechaLimiteSlaBefore(Collection<EstadoTicket> estados, Instant ahora);
 }

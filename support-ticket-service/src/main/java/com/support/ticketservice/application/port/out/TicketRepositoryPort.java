@@ -20,4 +20,6 @@ public interface TicketRepositoryPort {
     List<Ticket> listarPorSolicitante(Long usuarioId);
 
     List<Ticket> listarPorTecnico(Long tecnicoId);
+
+    long contarVencidos(Instant ahora);
 }

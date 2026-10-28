@@ -2,6 +2,7 @@ package com.support.ticketservice.application.port.service;
 
 import com.support.ticketservice.application.port.in.EscalarTicketsUseCase;
 import com.support.ticketservice.application.port.out.HistorialRepositoryPort;
+import com.support.ticketservice.application.port.out.TicketMetricsPort;
 import com.support.ticketservice.application.port.out.TicketRepositoryPort;
 import com.support.ticketservice.domain.model.HistorialTicket;
 import com.support.ticketservice.domain.model.Ticket;
@@ -27,6 +28,7 @@ public class EscalarTicketsService implements EscalarTicketsUseCase {
     private final HistorialRepositoryPort historial;
     private final TransactionTemplate tx;
     private final Clock clock;
+    private final TicketMetricsPort metrics;
 
     @Value("${app.escalation.threshold}")
     private Duration umbral;
@@ -74,6 +76,7 @@ public class EscalarTicketsService implements EscalarTicketsUseCase {
         historial.guardar(new HistorialTicket(null, ticket.getId(), ticket.getEstado(),
                 ticket.getEstado(), tecnicoId,
                 "Escalado automático: " + motivo + "; " + cambio, SISTEMA, ahora));
+        metrics.ticketEscalado(ticket.getPrioridad());
         return true;
     }
 }

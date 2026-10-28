@@ -77,4 +77,9 @@ public class TicketPersistenceAdapter implements TicketRepositoryPort {
     public List<Long> buscarIdsEscalables(Instant limite) {
         return jpa.buscarIdsEscalables(ESTADOS_SLA, limite);
     }
+
+    @Override
+    public long contarVencidos(Instant ahora) {
+        return jpa.countByEstadoInAndFechaLimiteSlaBefore(ESTADOS_SLA, ahora);
+    }
 }
