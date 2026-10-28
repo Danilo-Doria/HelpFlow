@@ -46,7 +46,7 @@ services:
       DB_PASSWORD: helpflow
       DISPATCH_URL: http://technician-dispatch-service:8081
       JWT_SECRET: ${JWT_SECRET:-cambia-esta-clave-por-una-de-minimo-32-caracteres-seguros}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin12345*}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
       SPRING_PROFILES_ACTIVE: json
     ports:
       - "8080:8080"

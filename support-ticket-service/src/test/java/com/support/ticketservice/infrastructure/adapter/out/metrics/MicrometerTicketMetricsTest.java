@@ -19,7 +19,7 @@ class MicrometerTicketMetricsTest {
 
         metrics.ticketCreado(Categoria.HARDWARE, Prioridad.ALTA);
 
-        assertThat(registry.get("helpflow.tickets.created")
+        assertThat(registry.get("helpflow.tickets.opened")
                 .tags("categoria", "HARDWARE", "prioridad", "ALTA")
                 .counter().count()).isEqualTo(1.0);
     }

@@ -46,6 +46,13 @@ public class CrearTicketService implements CrearTicketUseCase {
                 cmd.prioridad(), cmd.sede(), cmd.activoAfectado(),
                 usuario, slaConfig.obtener(), ahora);
         ticket = tickets.guardar(ticket);
+
+        // Se registra aquí, antes de cualquier return anticipado, para contar TODOS los
+        // tickets creados (también los que quedan ABIERTO) y con la prioridad solicitada.
+        metrics.ticketCreado(ticket.getCategoria(), ticket.getPrioridad());
+        log.info("Ticket creado id={} categoria={} prioridad={} solicitante={}",
+                ticket.getId(), ticket.getCategoria(), ticket.getPrioridad(), actor);
+
         historial.guardar(new HistorialTicket(null, ticket.getId(), null,
                 EstadoTicket.ABIERTO, null, "Ticket creado", actor, ahora));
 
@@ -84,10 +91,6 @@ public class CrearTicketService implements CrearTicketUseCase {
                 ahora, true, actor));
         historial.guardar(new HistorialTicket(null, ticket.getId(), EstadoTicket.ABIERTO,
                 EstadoTicket.ASIGNADO, tecnico.id(), observacion, actor, ahora));
-
-        metrics.ticketCreado(ticket.getCategoria(), ticket.getPrioridad());
-        log.info("Ticket creado id={} categoria={} prioridad={} solicitante={}",
-                ticket.getId(), ticket.getCategoria(), ticket.getPrioridad(), actor);
 
         return ticket;
     }

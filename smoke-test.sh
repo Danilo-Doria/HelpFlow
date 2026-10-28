@@ -36,6 +36,7 @@ req() { # METODO URL [TOKEN] [JSON]  -> deja CODE y BODY
   local args=(-s -o "$TMP" -w '%{http_code}' -X "$method" "$url")
   [ -n "$token" ] && args+=(-H "Authorization: Bearer $token")
   [ -n "$data" ]  && args+=(-H "Content-Type: application/json" -d "$data")
+  : > "$TMP"
   CODE=$(curl "${args[@]}")
   BODY=$(cat "$TMP")
 }
@@ -78,6 +79,37 @@ sql() { docker exec -i "$DB_CONTAINER" psql -U helpflow -d helpflow -qAt -c "$1"
 post_dispatch() { # JSON
   curl -s -X POST "$DISPATCH/technician-dispatch" -H 'Content-Type: application/json' -d "$1"
 }
+
+# ------------------------------------------------------------ pre-chequeos ----
+printf 'Esperando a que %s esté disponible' "$API"
+LISTO=0
+for _ in $(seq 1 60); do
+  if curl -sf -o /dev/null "$API/actuator/health"; then LISTO=1; break; fi
+  printf '.'; sleep 2
+done
+echo
+if [ "$LISTO" != "1" ]; then
+  echo "ERROR: $API no responde tras 2 minutos."
+  echo "Revisa: docker compose ps  /  docker compose logs support-ticket-service --tail 80"
+  exit 1
+fi
+if ! curl -sf -o /dev/null "$DISPATCH/actuator/health"; then
+  echo "ERROR: $DISPATCH (technician-dispatch-service) no responde."
+  exit 1
+fi
+PRE_RESP=$(curl -s -w '\n%{http_code}' -X POST "$API/auth/login" -H 'Content-Type: application/json' \
+  -d "{\"username\":\"$ADMIN_USER\",\"password\":\"$ADMIN_PASS\"}")
+PRE_CODE=$(echo "$PRE_RESP" | tail -n1)
+PRE_BODY=$(echo "$PRE_RESP" | sed '$d')
+PRE_ADMIN=$(echo "$PRE_BODY" | jq -r '.token // empty' 2>/dev/null)
+if [ -z "$PRE_ADMIN" ]; then
+  echo "ERROR: no se pudo iniciar sesión como Admin."
+  echo "  usuario usado : $ADMIN_USER"
+  echo "  respuesta     : HTTP $PRE_CODE  $PRE_BODY"
+  echo "  Si es 401, la contraseña no coincide. Ejecuta:"
+  echo "     ADMIN_USER='tu-admin' ADMIN_PASS='tu-clave' ./smoke-test.sh"
+  exit 1
+fi
 
 # =============================================================================
 section "1. SALUD Y TECHNICIAN-DISPATCH-SERVICE (puerto 8081)"
@@ -281,13 +313,15 @@ check "Luis vuelve a iniciar sesión" 200 POST "$API/auth/login" "" '{"username"
 # =============================================================================
 section "8. CARGA MAXIMA Y TECNICO INACTIVO"
 # =============================================================================
-check "Admin crea técnico ACCESOS con carga máxima 1" 201 POST "$API/tecnicos" "$ADMIN" \
-  '{"documento":"U'$S'","nombre":"Tecnico Uno","salario":3000000,"fechaAfiliacion":"2024-05-01","especialidad":"ACCESOS","sede":"MEDELLIN","cargaMaxima":1,"username":"uno'$S'@helpflow.com","password":"Clave12345"}'
-UNO_ID=$(echo "$BODY" | jq -r .id)
+# Los tickets se crean ANTES que el técnico: si no, la asignación automática
+# le daría el cupo al técnico nuevo y la prueba manual ya no sería determinista.
 check "Ticket ACCESOS A" 201 POST "$API/tickets" "$ANA" "$(ticket ACCESOS BAJA MEDELLIN)"
 TA=$(echo "$BODY" | jq -r .id)
 check "Ticket ACCESOS B" 201 POST "$API/tickets" "$ANA" "$(ticket ACCESOS BAJA MEDELLIN)"
 TB=$(echo "$BODY" | jq -r .id)
+check "Admin crea técnico ACCESOS con carga máxima 1" 201 POST "$API/tecnicos" "$ADMIN" \
+  '{"documento":"U'$S'","nombre":"Tecnico Uno","salario":3000000,"fechaAfiliacion":"2024-05-01","especialidad":"ACCESOS","sede":"MEDELLIN","cargaMaxima":1,"username":"uno'$S'@helpflow.com","password":"Clave12345"}'
+UNO_ID=$(echo "$BODY" | jq -r .id)
 check "Admin asigna A al técnico (queda en su carga máxima)" 200 PUT "$API/tickets/$TA/asignacion" "$ADMIN" '{"tecnicoId":'$UNO_ID'}'
 check "Asignar B supera la carga máxima" 422 PUT "$API/tickets/$TB/asignacion" "$ADMIN" '{"tecnicoId":'$UNO_ID'}'
 expect "  -> el detalle menciona la carga máxima" '.detail|contains("carga máxima")' true
@@ -369,10 +403,10 @@ expect "  -> nombre de la aplicación" '.app.name' support-ticket-service
 check "/actuator/metrics sin token" 401 GET "$API/actuator/metrics" ""
 check "/actuator/metrics con usuario normal" 403 GET "$API/actuator/metrics" "$ANA"
 check "/actuator/metrics con Admin" 200 GET "$API/actuator/metrics" "$ADMIN"
-check "Métrica por categoría (RED)" 200 GET "$API/actuator/metrics/helpflow.tickets.created?tag=categoria:RED" "$ADMIN"
+check "Métrica por categoría (RED)" 200 GET "$API/actuator/metrics/helpflow.tickets.opened?tag=categoria:RED" "$ADMIN"
 check "/actuator/prometheus con Admin" 200 GET "$API/actuator/prometheus" "$ADMIN"
 PROM="$BODY"
-for m in helpflow_tickets_created_total \
+for m in helpflow_tickets_opened_total \
          helpflow_tickets_first_response_seconds_count \
          helpflow_tickets_resolution_seconds_count \
          helpflow_tickets_vencidos \

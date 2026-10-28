@@ -126,7 +126,8 @@ class CrearTicketServiceTest {
 
         assertThat(resultado.getEstado()).isEqualTo(EstadoTicket.ABIERTO);
         assertThat(resultado.getTecnicoAsignado()).isNull();
-        verifyNoInteractions(tecnicos, asignaciones, metrics);
+        verify(metrics).ticketCreado(Categoria.HARDWARE, Prioridad.ALTA);
+        verifyNoInteractions(tecnicos, asignaciones);
         verify(historial).guardar(any(HistorialTicket.class));
     }
 
@@ -147,7 +148,7 @@ class CrearTicketServiceTest {
         assertThat(resultado.getEstado()).isEqualTo(EstadoTicket.ABIERTO);
         assertThat(resultado.getTecnicoAsignado()).isNull();
         verify(asignaciones, never()).guardar(any());
-        verify(metrics, never()).ticketCreado(any(), any());
+        verify(metrics).ticketCreado(Categoria.HARDWARE, Prioridad.ALTA);
     }
 
     // ─────────────────────────────────────────────────────────────────────────

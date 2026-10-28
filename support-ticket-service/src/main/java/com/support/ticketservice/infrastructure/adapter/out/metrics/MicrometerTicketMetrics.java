@@ -18,7 +18,7 @@ public class MicrometerTicketMetrics implements TicketMetricsPort {
 
     @Override
     public void ticketCreado(Categoria categoria, Prioridad prioridad) {
-        registry.counter("helpflow.tickets.created",
+        registry.counter("helpflow.tickets.opened",
                 "categoria", categoria.name(), "prioridad", prioridad.name()).increment();
     }
 
