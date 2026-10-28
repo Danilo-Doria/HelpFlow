@@ -681,6 +681,13 @@ Las dependencias siempre apuntan hacia el dominio. Los controladores delegan en 
 
 ## Documentación adicional
 
-- `AGENTS.md` — comandos, convenciones, arquitectura y organización de pruebas.
 - `smoke-test.sh` — suite HTTP de extremo a extremo.
 - Swagger UI de cada servicio para contratos detallados.
+
+---
+
+## 👨‍💻 Author
+
+- GitHub: **[Danilo-Doria](https://github.com/Danilo-Doria)**
+- LinkedIn: **[Danilo Doria Diaz](https://www.linkedin.com/in/danilodd)**
+- Mail: **danilodoria519@gmail.com**
